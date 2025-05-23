@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2</title>
+    <style>
+        :root {
+            --primary: #fff;
+            --bg-color: rgb(5, 53, 61);
+            --bg-envelope-color: #f5edd1;
+            --envelope-tab: #ecdeb8;
+            --envelope-cover: #e6cfa7;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --txt-color: #444;
+            --heart-color: rgb(252, 8, 231);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+
+        #fireflies {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .firefly {
+            position: absolute;
+            background: radial-gradient(circle, yellow 0%, rgba(255,255,255,0) 60%);
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            opacity: 0.5;
+            animation: moveRandomly 10s linear infinite, glow 2s ease-in-out infinite;
+        }
+
+        @keyframes moveRandomly {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(100px, -50px); }
+            50% { transform: translate(-50px, 100px); }
+            75% { transform: translate(-100px, -50px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .container > .envelope-wrapper {
+            background: var(--bg-envelope-color);
+            box-shadow: 0 0 40px var(--shadow-color);
+            display: none; /* Initially hidden */
+        }
+
+        .envelope-wrapper > .envelope {
+            position: relative;
+            width: 300px;
+            height: 230px;
+        }
+
+        .envelope-wrapper > .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 130px solid var(--envelope-tab);
+            border-right: 150px solid transparent;
+            border-left: 150px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out 0.7s;
+        }
+
+        .envelope-wrapper > .envelope::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            width: 0px;
+            height: 0px;
+            border-top: 130px solid transparent;
+            border-right: 150px solid var(--envelope-cover);
+            border-bottom: 100px solid var(--envelope-cover);
+            border-left: 150px solid var(--envelope-cover);
+        }
+
+        .envelope > .letter {
+            position: absolute;
+            right: 20%;
+            bottom: 0;
+            width: 54%;
+            height: 80%;
+            background: var(--primary);
+            text-align: center;
+            transition: all 1s ease-in-out;
+            box-shadow: 0 0 5px var(--shadow-color);
+            padding: 20px 10px;
+        }
+
+        .envelope > .letter > .text {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: var(--txt-color);
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 180px;
+            text-align: justify;
+            font-size: 5px;
+        }
+
+        .heart {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            background: var(--heart-color);
+            z-index: 4;
+            transform: translate(-50%, -20%) rotate(45deg);
+            transition: transform 0.5s ease-in-out 1s;
+            box-shadow: 0 1px 6px var(--shadow-color);
+            cursor: pointer;
+        }
+
+        .heart:before, 
+        .heart:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--heart-color);
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -7.5px;
+        }
+
+        .heart:after {
+            right: 7.5px;
+        }
+
+        .flap > .envelope:before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .flap > .envelope > .letter {
+            bottom: 100px;
+            transform: scale(1.5);
+            transition-delay: 1s;
+        }
+
+        .flap > .heart {
+            transform: rotate(90deg);
+            transition-delay: 0.4s;
+        }
+
+        #poem {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            line-height: 2;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        #redirectButton {
+            display: block;
+            margin-bottom: 50px; 
+            padding: 10px 20px;
+            background-color: #00bfff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            display: none;
+        }
+
+        #redirectButton:hover {
+            background-color: #1e90ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="fireflies"></div>
+    <div class="container">
+        <button id="playButton">:></button>
+        <div id="poem"></div>
+
+        <!-- Button that leads to another website -->
+        <a id="redirectButton" href="http://localhost:8383/final3/final4.html">Don't click this you'll be rickrolled</a>
+
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>HELLO DEA!</strong>
+                        <p style="font-size:8px; width: 165px;">Lahat ng tao may sari-sariling pananaw, katulad ko ikaw lang ang tinatanaw. I am commited to you and I'm always here for you :)</p>
+                        <p style="font-size:8px; width: 165px;">I want us to have a strong relationship built on trust and honest communication. Always remember that you are loved and deeply valued by me. I'm committed to us and to helping our relationship grow in the best way possible.</P>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+        </div>
+    </div>
+    <audio id="music" src="videoplayback.m4a"></audio>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function () {
+            document.getElementById('music').play();
+            createFireflies(30);
+            showPoem();
+            this.style.display = 'none';
+        });
+
+        function createFireflies(number) {
+            const firefliesContainer = document.getElementById('fireflies');
+            for (let i = 0; i < number; i++) {
+                const firefly = document.createElement('div');
+                firefly.classList.add('firefly');
+                firefly.style.top = Math.random() * window.innerHeight + 'px';
+                firefly.style.left = Math.random() * window.innerWidth + 'px';
+                firefly.style.animationDuration = (Math.random() * 15 + 5) + 's';
+                firefly.style.animationDelay = Math.random() * 5 + 's';
+                firefliesContainer.appendChild(firefly);
+            }
+        }
+
+        const poemLines = [
+            "A secret kept, a heart concealed,",
+            "But one word spoken, his emotions revealed.",
+            "Her name whispered, a blush did rise,",
+            "Exposing the love, he tried to disguise.",
+            "His cheeks aflame, his heart beats fast,",
+            "The truth is out, his love will last.",
+            "No longer hidden, his feelings shine,",
+            "A love so strong, it’s simply divine.",
+            "...",
+            "You walk in beauty like the cloudless climes and starry skies",
+            "You are like a wildflower",
+            "Blooming midst of a field of roses",
+            "You are SPECIAL dea",
+            "You are :)"
+        ];
+
+        function showPoem() {
+            const poemDiv = document.getElementById('poem');
+            let delay = 0;
+
+            poemLines.forEach((line, index) => {
+                setTimeout(() => {
+                    poemDiv.textContent = line;
+                    poemDiv.style.opacity = 1;
+                    setTimeout(() => {
+                        poemDiv.style.opacity = 0;
+                        if (index === poemLines.length - 1) {
+                            showMail();
+                            showRedirectButton();  // Show button after poem
+                        }
+                    }, 2000);
+                }, delay);
+                delay += 5000;
+            });
+        }
+
+        function showMail() {
+            const envelopeWrapper = document.querySelector('.envelope-wrapper');
+            envelopeWrapper.style.display = 'block'; 
+            setTimeout(() => {
+                envelopeWrapper.classList.add('flap');
+            }, 500);
+        }
+
+        function showRedirectButton() {
+            const redirectButton = document.getElementById('redirectButton');
+            redirectButton.style.display = 'block'; 
+        }
+    </script>
+</body>
+</html>
